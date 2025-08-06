@@ -6,7 +6,7 @@ const serverless = require('serverless-http');
 const app = express();
 
 const corsOptions = {
-  origin: 'https://privacy-negrini.vercel.app/',
+  origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 };
