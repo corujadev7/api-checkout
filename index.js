@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Rota de teste
 app.get('/dummie', (req, res) => {
-  res.json({ name: "dummie dummie dummie" });
+  return res.json({ name: "dummie dummie dummie" });
 });
 
 // Rota principal
@@ -73,4 +73,7 @@ app.post('/create-transaction', async (req, res) => {
   }
 });
 
-module.exports = serverless(app);
+const port = 8080
+app.listen(port,()=>{
+  console.log('server is running')
+})
