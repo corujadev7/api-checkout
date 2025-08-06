@@ -12,7 +12,7 @@ const corsOptions = {
 app.use(cors(corsOptions)); // permite chamadas do seu front que estará em outro domínio
 app.use(express.json());
 
-app.post('/create-transaction', async (req, res) => {
+app.post('/api/create-transaction', async (req, res) => {
     // aqui seu código para chamar BlackCat etc
     try {
 
@@ -70,7 +70,7 @@ app.post('/create-transaction', async (req, res) => {
         console.error('Erro na requisição:', error);
     }
 });
-app.get('/dummie',(req, res)=>{
+app.get('/api/dummie',(req, res)=>{
     res.json({name:"dummie dummie dummie"})
 })
 
