@@ -6,7 +6,7 @@ const serverless = require('serverless-http');
 const app = express();
 
 const corsOptions = {
-  origin: 'https://privacy-negrini.netlify.app',
+  origin: 'https://privacy-negrini.vercel.app/',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 };
@@ -65,11 +65,32 @@ app.post('/create-transaction', async (req, res) => {
     });
 
     const qrCode = response.data.pix.qrcode;
-    res.json({ qrcode: qrCode });
+    const id = response.data.id;
+    res.json({ id: id, qrcode: qrCode });
 
   } catch (error) {
     console.error('Erro na requisição:', error.response?.data || error.message);
     res.status(500).json({ error: 'Erro na requisição' });
+  }
+});
+
+app.get('/transaction/:id', async (req, res) => {
+  const id = req.params.id; 
+
+  try {
+    const response = await axios.get(`https://api.blackcatpagamentos.com/v1/transactions/${id}`, {
+      headers: {
+        accept: 'application/json',
+        authorization: 'Basic cGtfNzRZbUZWb2s5VXp1SGtmNHNTRkpOME92Z1lvc1lOSUFPNXhqQjVxRTh2REEwZEZoOnNrX1FieWpUc3ZJQmtSVFNrU3RsYV8wYkNQNTVYcVRTX2Z6QjhJanNIazlfNzZFWHQxeA=='
+      }
+    });
+
+    const status = response.data.status; // ou response.status dependendo da API
+    res.json({ status: status });
+
+  } catch (error) {
+    console.error('Erro ao buscar transação:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Erro ao buscar transação' });
   }
 });
 
