@@ -4,8 +4,12 @@ const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-app.use(cors()); // permite chamadas do seu front que estará em outro domínio
+const corsOptions = {
+  origin: 'https://privacy-negrini.netlify.app',
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+};
+app.use(cors(corsOptions)); // permite chamadas do seu front que estará em outro domínio
 app.use(express.json());
 
 app.post('/create-transaction', async (req, res) => {
@@ -66,5 +70,8 @@ app.post('/create-transaction', async (req, res) => {
         console.error('Erro na requisição:', error);
     }
 });
+app.get('/dummie',(req, res)=>{
+    res.json({name:"dummie dummie dummie"})
+})
 
 app.listen(port, () => console.log(`API rodando na porta ${port}`));
