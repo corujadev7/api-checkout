@@ -1,20 +1,25 @@
 const express = require('express');
+const axios = require('axios');
 const cors = require('cors');
 const serverless = require('serverless-http');
 
 const app = express();
 
-app.use(cors({
+const corsOptions = {
   origin: 'https://privacy-negrini.netlify.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
+// Rota de teste
 app.get('/api/dummie', (req, res) => {
   res.json({ name: "dummie dummie dummie" });
 });
 
+// Rota principal
 app.post('/api/create-transaction', async (req, res) => {
   try {
     const { name, email, cpf, amount } = req.body;
@@ -45,7 +50,12 @@ app.post('/api/create-transaction', async (req, res) => {
         email,
         document: { type: 'cpf', number: cpf }
       },
-      items: [{ title: 'privacy negrini', unitPrice: amount, quantity: 1, tangible: false }]
+      items: [{
+        title: 'privacy negrini',
+        unitPrice: amount,
+        quantity: 1,
+        tangible: false
+      }]
     }, {
       headers: {
         accept: 'application/json',
@@ -58,10 +68,9 @@ app.post('/api/create-transaction', async (req, res) => {
     res.json({ qrcode: qrCode });
 
   } catch (error) {
-    console.error(error);
+    console.error('Erro na requisição:', error.response?.data || error.message);
     res.status(500).json({ error: 'Erro na requisição' });
   }
 });
 
-// EXPORTAÇÃO SERVERLESS
 module.exports = serverless(app);
