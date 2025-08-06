@@ -15,12 +15,12 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Rota de teste
-app.get('/api/dummie', (req, res) => {
+app.get('/dummie', (req, res) => {
   res.json({ name: "dummie dummie dummie" });
 });
 
 // Rota principal
-app.post('/api/create-transaction', async (req, res) => {
+app.post('/create-transaction', async (req, res) => {
   try {
     const { name, email, cpf, amount } = req.body;
 
